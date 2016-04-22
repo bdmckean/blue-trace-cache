@@ -5,14 +5,15 @@
 #include "lru.h"
 
 
-bool lru_insert(uint64_t key, void * data, uint64_t length){
-	return false;
-}
-bool lru_find(uint64_t key, uint16_t hit_type){
+bool lru_insert(struct cache_block *cb){
 	return false;
 }
 
-bool lru_invalidate(uint64_t key){
+bool lru_find(uint64_t lba, uint64_t length, struct cache_block *cb){
+	return false;
+}
+
+bool lru_invalidate(uint64_t lba, uint64_t length){
 	return false;
 }
 
@@ -52,8 +53,6 @@ bool lru_create(struct lru **lru, uint16_t count){
 	(*lru)->free_tail = w;
 	w->next = NULL;
 	w->prev = NULL;
-	w->key = 1;
-	w->data = NULL;
 
 	for ( int i = 1; i < count; i++){
 		struct lru_element *x = malloc(sizeof(struct lru_element));
@@ -62,8 +61,6 @@ bool lru_create(struct lru **lru, uint16_t count){
 		w->next = x;
 		x->prev = w;
 		x->next = NULL;
-		x->key = w->key + 1;
-		x->data = NULL; 
 		(*lru)->free_tail = x;
 		w = x;
 	}

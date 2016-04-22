@@ -5,10 +5,8 @@
 #include <stdint.h>
 
 struct lru_element {
-	uint64_t key;
-	uint64_t length;
-	uint32_t stats;
-	void * data;
+	struct io_buf *io;
+	struct cache_block * cache_block;
 	struct lru_element * next;
 	struct lru_element * prev;
 	struct lru_element * next_hash;
@@ -26,9 +24,9 @@ struct lru {
 	};
 
 
-extern bool lru_insert (uint64_t key, void * data, uint64_t length);
+extern bool lru_insert (struct cache_block *cb);
 extern bool lru_hit(uint64_t key, uint16_t hit_type);
-extern bool lru_invalidate(uint64_t key);
+extern bool lru_invalidate(uint64_t lba, uint64_t length);
 extern bool lru_create(struct lru ** lru, uint16_t count);
 extern void lru_delete(); 
 
